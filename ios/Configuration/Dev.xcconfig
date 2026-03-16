@@ -1,0 +1,6 @@
+// Dev Configuration
+#include "Config.xcconfig"
+
+API_BASE_URL = https:/$()/dev.api.atriz.mx
+ALLOW_ENV_OVERRIDE = NO
+BUNDLE_ID_SUFFIX = .dev
