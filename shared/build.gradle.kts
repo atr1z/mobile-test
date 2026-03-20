@@ -47,6 +47,12 @@ kotlin {
             // SQLDelight
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.coroutines)
+
+            // Logging
+            implementation(libs.kermit)
+
+            // Error tracking
+            implementation(libs.sentry.kotlin.multiplatform)
         }
         
         androidMain.dependencies {
@@ -62,6 +68,9 @@ kotlin {
         
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.koin.test)
+            implementation(libs.ktor.client.mock)
         }
     }
 }

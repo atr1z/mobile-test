@@ -1,0 +1,61 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: Lint Swift code
+        run: swiftlint lint --strict ios/
+
+      - name: Build shared framework
+        run: ./gradlew :shared:linkReleaseFrameworkIosSimulatorArm64
+
+      - name: Build atriz iOS app
+        run: |
+          xcodebuild build \
+            -project ios/ios.xcodeproj \
+            -scheme atriz \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Build fraccio iOS app
+        run: |
+          xcodebuild build \
+            -project ios/ios.xcodeproj \
+            -scheme fraccio \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Run atriz tests
+        run: |
+          xcodebuild test \
+            -project ios/ios.xcodeproj \
+            -scheme atriz \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Run fraccio tests
+        run: |
+          xcodebuild test \
+            -project ios/ios.xcodeproj \
+            -scheme fraccio \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            CODE_SIGNING_ALLOWED=NO
