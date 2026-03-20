@@ -25,7 +25,7 @@ sqldelight = "2.0.2"
 ktlint = "12.1.2"
 ben-manes-versions = "0.51.0"
 kermit = "2.0.4"
-sentry-kotlin-multiplatform = "0.14.0"
+sentry-kotlin-multiplatform = "0.25.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
